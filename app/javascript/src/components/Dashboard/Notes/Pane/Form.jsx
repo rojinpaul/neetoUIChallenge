@@ -65,14 +65,6 @@ export default function NoteForm({ onClose, saveNote, note, isEdit }) {
               size="small"
               label="Select"
               strategy="fixed"
-              Getting
-              Started
-              Onboarding
-              User
-              Flow
-              UX
-              Bugs
-              V2
               options={[
                 { value: "Getting Started", label: "Getting Started" },
                 { value: "User Flow", label: "User Flow" },
