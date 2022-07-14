@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 
 import { MenuVertical, Clock } from "@bigbinary/neeto-icons";
-import { Typography, Dropdown, Avatar, Tag } from "neetoui";
+import { Typography, Dropdown, Avatar, Tag, Modal, Button } from "neetoui";
 
-import EditNotePane from "./Pane/Edit";
-
-const Table = ({ notes = [], fetchNotes }) => {
-  const [showEditNote, setShowEditNote] = useState(false);
+const Table = ({ notes = [], deleteNote }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
   return (
     <>
       <div className="grid w-full gap-3">
-        {notes.map(note => (
-          <div className="box-border flex-col border-2 p-4" key={note.id}>
+        {notes.map((note, index) => (
+          <div className="box-border flex-col border-2 p-4" key={index}>
             <div className="flex">
               <div className="flex w-3/4">
                 <Typography
@@ -32,7 +31,14 @@ const Table = ({ notes = [], fetchNotes }) => {
                   position="left-end"
                 >
                   <li>Edit</li>
-                  <li>Delete</li>
+                  <li
+                    onClick={() => {
+                      setSelectedNoteIndex(index);
+                      setShowDeleteModal(true);
+                    }}
+                  >
+                    Delete
+                  </li>
                 </Dropdown>
               </div>
             </div>
@@ -71,11 +77,36 @@ const Table = ({ notes = [], fetchNotes }) => {
           </div>
         ))}
       </div>
-      <EditNotePane
-        showPane={showEditNote}
-        setShowPane={setShowEditNote}
-        fetchNotes={fetchNotes}
-      />
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        size="md"
+      >
+        <Modal.Header>
+          <Typography style="h2">Delete Note</Typography>
+        </Modal.Header>
+        <Modal.Body>
+          <Typography style="body2" lineHeight="normal">
+            Are you sure want to delete note? the action cannot be undone.
+          </Typography>
+        </Modal.Body>
+        <Modal.Footer className="space-x-2">
+          <Button
+            size="large"
+            label="Continue"
+            onClick={() => {
+              setShowDeleteModal(false);
+              deleteNote(selectedNoteIndex);
+            }}
+          />
+          <Button
+            style="text"
+            size="large"
+            label="Cancel"
+            onClick={() => setShowDeleteModal(false)}
+          />
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

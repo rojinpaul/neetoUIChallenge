@@ -29,7 +29,6 @@ const Notes = () => {
       setLoading(true);
       const dummyNotes = [
         {
-          id: 1,
           title: "How to claim the warranty?",
           description:
             '"Are you getting my texts???" she texted to him. He glanced at it and chuckled under his breath. Of course he was getting them, but if he wasn\'t getting',
@@ -37,7 +36,6 @@ const Notes = () => {
           tag: "Getting Started",
         },
         {
-          id: 2,
           title: "How to Process Refund?",
           description: "How to get the refund for damaged Order?",
           contact: "Jacobs Jones",
@@ -51,6 +49,9 @@ const Notes = () => {
       setLoading(false);
     }
   };
+
+  const deleteNote = index =>
+    setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
 
   if (loading) {
     return <PageLoader />;
@@ -131,11 +132,7 @@ const Notes = () => {
           menuBarToggle={function noRefCheck() {}}
         />
         {notes.length ? (
-          <Table
-            setSelectedNoteIds={setSelectedNoteIds}
-            notes={notes}
-            fetchNotes={fetchNotes}
-          />
+          <Table notes={notes} deleteNote={deleteNote} />
         ) : (
           <EmptyState
             image={EmptyNotesListImage}
