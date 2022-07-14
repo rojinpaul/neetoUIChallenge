@@ -57,6 +57,13 @@ const Notes = () => {
     return <PageLoader />;
   }
 
+  const saveNote = note => {
+    setNotes([
+      ...notes,
+      { ...note, contact: note.contact.value, tag: note.tag.value },
+    ]);
+  };
+
   return (
     <>
       <MenuBar showMenu={true} title="Notes">
@@ -145,7 +152,7 @@ const Notes = () => {
         <NewNotePane
           showPane={showNewNotePane}
           setShowPane={setShowNewNotePane}
-          fetchNotes={fetchNotes}
+          saveNote={saveNote}
         />
         {showDeleteAlert && (
           <DeleteAlert
