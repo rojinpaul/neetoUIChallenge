@@ -2,13 +2,13 @@ import React, { useState } from "react";
 
 import { Formik, Form } from "formik";
 import { Button, Pane } from "neetoui";
-import { Input, Textarea } from "neetoui/formik";
+import { Input, Textarea, Select } from "neetoui/formik";
 
 import notesApi from "apis/notes";
 
 import { NOTES_FORM_VALIDATION_SCHEMA } from "../constants";
 
-export default function NoteForm({ onClose, refetch, note, isEdit }) {
+export default function NoteForm({ onClose, saveNote, note, isEdit }) {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async values => {
@@ -16,9 +16,8 @@ export default function NoteForm({ onClose, refetch, note, isEdit }) {
       if (isEdit) {
         await notesApi.update(note.id, values);
       } else {
-        await notesApi.create(values);
+        saveNote(values);
       }
-      refetch();
       onClose();
     } catch (err) {
       logger.error(err);
@@ -46,7 +45,41 @@ export default function NoteForm({ onClose, refetch, note, isEdit }) {
               label="Description"
               name="description"
               className="w-full flex-grow-0"
-              rows={8}
+              rows={1}
+              required
+            />
+            <Select
+              name="contact"
+              placeholder="Select Contact"
+              className="w-full"
+              size="small"
+              label="Select"
+              strategy="fixed"
+              options={[{ value: "Jacob Jones", label: "Jacob Jones" }]}
+              required
+            />
+            <Select
+              name="tag"
+              placeholder="Select Tag"
+              className="w-full"
+              size="small"
+              label="Select"
+              strategy="fixed"
+              Getting
+              Started
+              Onboarding
+              User
+              Flow
+              UX
+              Bugs
+              V2
+              options={[
+                { value: "Getting Started", label: "Getting Started" },
+                { value: "User Flow", label: "User Flow" },
+                { value: "UX", label: "UX" },
+                { value: "Bugs", label: "Bugs" },
+                { value: "V2", label: "V2" },
+              ]}
               required
             />
           </Pane.Body>
